@@ -10,6 +10,7 @@ import {
     FormItem,
 } from "@/components/ui/form"
 import EquationsSchema from "@/schemas/EquationsSchema";
+import { parseEquations } from "@/actions/string-utils";
 
 export default function CalcArea() {
     const form = useForm<z.infer<typeof EquationsSchema>>({
@@ -19,8 +20,8 @@ export default function CalcArea() {
         },
     })
 
-    function onSubmit(values: z.infer<typeof EquationsSchema>) {
-        console.log(values)
+    async function onSubmit(values: z.infer<typeof EquationsSchema>) {
+        console.log(await parseEquations(values.equations))
     }
 
     return (
