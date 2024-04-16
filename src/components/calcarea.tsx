@@ -9,28 +9,17 @@ import {
     FormField,
     FormItem,
 } from "@/components/ui/form"
-
-/**
- * Component for calculating the area.
- * 
- * @returns The JSX element for the CalcArea component.
- */
-
-const formSchema = z.object({
-    equations: z.string().min(2, {
-        message: "Please enter at least two equations.",
-    }),
-})
+import EquationsSchema from "@/schemas/EquationsSchema";
 
 export default function CalcArea() {
-    const form = useForm<z.infer<typeof formSchema>>({
-        resolver: zodResolver(formSchema),
+    const form = useForm<z.infer<typeof EquationsSchema>>({
+        resolver: zodResolver(EquationsSchema),
         defaultValues: {
             equations: "",
         },
     })
 
-    function onSubmit(values: z.infer<typeof formSchema>) {
+    function onSubmit(values: z.infer<typeof EquationsSchema>) {
         console.log(values)
     }
 
