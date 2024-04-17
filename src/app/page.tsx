@@ -1,16 +1,10 @@
-"use client"
-
-import CalcArea from "@/components/calcarea";
+import Link from "next/link";
 
 export default function Home() {
   return (
     <main>
       <div className="flex justify-center mt-32">
-
-        <CalcArea onSubmitResult={(result) => {
-          console.log("Result from CalcArea:", result);
-        }} />
-
+        <Link href="/calc/linear-system">Go to Linear System Calculator</Link>
       </div>
     </main>
   );
