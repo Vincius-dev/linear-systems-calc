@@ -11,12 +11,10 @@ import {
 } from "@/components/ui/form"
 import EquationsSchema from "@/schemas/EquationsSchema";
 import { parseLinearEquations } from "@/actions/string-parser";
-import { convertToMatrix } from "@/actions/matrix-handler";
-import { gaussMethod } from "@/actions/gauss";
 import Equation from "@/model/equation";
 
 interface CalcAreaProps {
-    onSubmitResult: (result: Equation[]) => void;
+    onSubmitResult: (equations: Equation[]) => void;
 }
 
 export default function CalcArea({ onSubmitResult }: CalcAreaProps) {
@@ -28,13 +26,6 @@ export default function CalcArea({ onSubmitResult }: CalcAreaProps) {
     })
 
     async function onSubmit(values: z.infer<typeof EquationsSchema>) {
-        let equations = await parseLinearEquations(values.equations);
-        console.log(equations);
-        let matrixOfEquations = await convertToMatrix(equations);
-        console.log(matrixOfEquations);
-        let solutions = await gaussMethod(matrixOfEquations);
-        //console.log(solutions);
-
         onSubmitResult(await parseLinearEquations(values.equations));
     }
 
