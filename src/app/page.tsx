@@ -6,7 +6,11 @@ export default function Home() {
   return (
     <main>
       <div className="flex justify-center mt-32">
-        <CalcArea />
+
+        <CalcArea onSubmitResult={(result) => {
+          console.log("Result from CalcArea:", result);
+        }} />
+
       </div>
     </main>
   );

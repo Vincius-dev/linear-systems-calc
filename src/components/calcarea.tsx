@@ -10,9 +10,15 @@ import {
     FormItem,
 } from "@/components/ui/form"
 import EquationsSchema from "@/schemas/EquationsSchema";
-import { parseEquations } from "@/actions/string-utils";
+import { parseLinearEquations } from "@/actions/string-parser";
+import { convertToMatrix } from "@/actions/matrix-handler";
+import { gaussMethod } from "@/actions/gauss";
 
-export default function CalcArea() {
+interface CalcAreaProps {
+    onSubmitResult: (result: number[]) => void;
+}
+
+export default function CalcArea({ onSubmitResult }: CalcAreaProps) {
     const form = useForm<z.infer<typeof EquationsSchema>>({
         resolver: zodResolver(EquationsSchema),
         defaultValues: {
@@ -21,7 +27,14 @@ export default function CalcArea() {
     })
 
     async function onSubmit(values: z.infer<typeof EquationsSchema>) {
-        console.log(await parseEquations(values.equations))
+        let equations = await parseLinearEquations(values.equations);
+        console.log(equations);
+        let matrixOfEquations = await convertToMatrix(equations);
+        console.log(matrixOfEquations);
+        let solutions = await gaussMethod(matrixOfEquations);
+        //console.log(solutions);
+
+        onSubmitResult(solutions);
     }
 
     return (
@@ -38,7 +51,7 @@ export default function CalcArea() {
                                     <textarea
                                         id="comment"
                                         rows={4}
-                                        className="w-full px-0 text-sm text-gray-900 bg-white border-0 dark:bg-gray-800 focus:ring-0 dark:text-white dark:placeholder-gray-400"
+                                        className="w-full px-0 text-2xl text-gray-900 bg-white border-0 dark:bg-gray-800 focus:ring-0 dark:text-white dark:placeholder-gray-400"
                                         placeholder="Write your equations, separated by ; like: 2x + 3y + 4z = 10; 3x + 2y + 5z = 15; 4x + 3y + 6z = 20"
                                         required
                                         {...field}
